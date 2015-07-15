@@ -1,0 +1,13 @@
+{
+    "require": {
+        "league/flysystem": "^1.0",
+        "league/climate": "^3.1",
+        "symfony/console": "^2.7",
+        "league/flysystem-dropbox": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "mysqldumper\\Command\\": "src/"
+        }
+    }
+}
