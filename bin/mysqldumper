@@ -7,6 +7,8 @@ use League\CLImate\CLImate;
 use mysqldumper\Command;
 use Symfony\Component\Console\Application;
 
+$command = new Command\mysqldumper(new CLImate);
 $application = new Application('mysqldumper', '0.1-dev');
-$application->add(new Command\mysqldumper(new CLImate));
+$application->add($command);
+$application->setDefaultCommand($command->getName());
 $application->run();
