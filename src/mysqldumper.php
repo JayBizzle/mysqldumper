@@ -11,18 +11,15 @@ class mysqldumper extends Command
 {
     protected $cli;
 
-    protected $git;
-
-    public function __construct($git, $cli)
+    public function __construct($cli)
     {
         parent::__construct();
-        $this->git = $git;
         $this->cli = $cli;
     }
 
     protected function configure()
     {
-        $this->setName('mysqldumper')->setDescription('dump')->addArgument(
+        $this->setName('dump')->setDescription('Dump the data')->addArgument(
             'env',
             InputArgument::REQUIRED,
             'Required option'
@@ -35,8 +32,6 @@ class mysqldumper extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->git->setRepository('./');
-
         $this->mysqldumper();
     }
 
