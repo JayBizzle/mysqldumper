@@ -82,7 +82,7 @@ class mysqldumper extends Command
 
         foreach($files as $file) {
             $contents = $this->localAdapter->read('./'.$start_dump.'/'.$file['basename']);
-            $this->remoteAdapter->write($file['basename'], $contents);
+            $this->remoteAdapter->write('./'.$start_dump.'/'.$file['basename'], $contents);
         }
     }
 
