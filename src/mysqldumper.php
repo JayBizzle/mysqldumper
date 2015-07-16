@@ -2,9 +2,11 @@
 
 namespace Gradcracker\Console\Command;
 
+use Dropbox\Client;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Dropbox\DropboxAdapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,6 +20,8 @@ class mysqldumper extends Command
 
     protected $localAdapter;
 
+    protected $remoteAdapter;
+
     protected $db;
 
     public function __construct(CLImate $cli)
@@ -28,6 +32,7 @@ class mysqldumper extends Command
         $this->loadConfig();
         $this->databaseSetup();
         $this->setLocalAdapter();
+        $this->setRemoteAdapter();
     }
 
     protected function configure()
@@ -74,6 +79,12 @@ class mysqldumper extends Command
             $this->out('Completed', 'success');
         } else {
             $this->out('mysqldump not found. Please check your path.', 'error');
+        }
+        $files = $this->localAdapter->listContents('./'.$start_dump);
+
+        foreach($files as $file) {
+            $contents = $this->localAdapter->read('./'.$start_dump.'/'.$file['basename']);
+            $this->remoteAdapter->write($file['basename'], $contents);
         }
     }
 
@@ -126,5 +137,12 @@ class mysqldumper extends Command
     public function setLocalAdapter()
     {
         $this->localAdapter = new Filesystem(new Local($this->dump_folder));
+    }
+
+    public function setRemoteAdapter()
+    {
+        $client = new Client('ACCESS_TOKEN', 'APP_SECRET');
+        $adapter = new DropboxAdapter($client, 'test');
+        $this->remoteAdapter = new Filesystem($adapter);
     }
 }
