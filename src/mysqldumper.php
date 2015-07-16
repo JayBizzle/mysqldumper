@@ -1,6 +1,6 @@
 <?php
 
-namespace mysqldumper\Command;
+namespace Gradcracker\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,12 +8,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
+use League\CLImate\CLImate;
 
 class mysqldumper extends Command
 {
     protected $cli;
 
-    public function __construct($cli)
+    public function __construct(CLImate $cli)
     {
         parent::__construct();
         $this->cli = $cli;
