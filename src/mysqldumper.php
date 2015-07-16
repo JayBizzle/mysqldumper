@@ -13,11 +13,21 @@ use Symfony\Component\Console\Input\InputArgument;
 class mysqldumper extends Command
 {
     protected $cli;
+ 
+    protected $config;
+
+    protected $localAdapter;
+
+    protected $db;
 
     public function __construct(CLImate $cli)
     {
         parent::__construct();
         $this->cli = $cli;
+        $this->dump_folder = getcwd().'/dump';
+        $this->loadConfig();
+        $this->databaseSetup();
+        $this->setLocalAdapter();
     }
 
     protected function configure()
@@ -41,50 +51,81 @@ class mysqldumper extends Command
 
     public function mysqldumper()
     {
-        $dump_folder= getcwd().'/dump';
-        $start_dump = date('YmdHi');
-        $config     = json_decode(file_get_contents('config.json'));
-        $adapter    = new Local($dump_folder);
-        $filesystem = new Filesystem($adapter);
-        $filesystem->createDir('/'.$start_dump);
-        try {
-            $conn = new \PDO("mysql:host=".$config->host.";dbname=".$config->db, $config->user, $config->pass);
-            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare('SHOW TABLES'); 
-            $stmt->setFetchMode(\PDO::FETCH_ASSOC); // set the resulting array to associative
-            $stmt->execute();
-            
-            $table_list  = $stmt->fetchAll();
-            $table_count = count($table_list);
-            $progress    = $this->cli->progress()->total($table_count);
-            $i = 0;
-            foreach($table_list as $table)
-            {
-                $progress->advance(1, '<light_green>('.$i.' of '.$table_count.') Dumping '.$table['Tables_in_'.$config->db].'</light_green>');
-                exec($config->mysqldump.' --user='.$config->user.' --password='.$config->pass.' --host='.$config->host.' '.$config->db.' '.$table['Tables_in_'.$config->db].' | gzip > '.$dump_folder.'/'.$start_dump.'/'.$table['Tables_in_'.$config->db].'.sql.gz', $output);
-                $i++;
-            }
-        }
-        catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+        if($this->mysqldumpExists()) {
+            $start_dump = date('YmdHi');
+       
+            $this->localAdapter->createDir('/'.$start_dump);
 
-        $this->cli->br();
-        $this->out('Completed', 'success');
+            $table_list = $this->listTables();
+
+            $table_count = count($table_list);
+
+           $this->cli->dump($table_list);
+
+            $progress = $this->cli->progress()->total($table_count);
+
+            for($i = 0; $i < $table_count; $i++) {
+                //$this->cli->out($i, 'error');
+                $progress->advance(1, '<light_green>('.$i.' of '.$table_count.') Dumping '.$table_list[$i]['Tables_in_'.$this->config->db].'</light_green>');
+                exec($this->config->mysqldump.' --user='.$this->config->user.' --password='.$this->config->pass.' --host='.$this->config->host.' '.$this->config->db.' '.$table_list[$i]['Tables_in_'.$this->config->db].' | gzip > "'.$this->dump_folder.'/'.$start_dump.'/'.$table_list[$i]['Tables_in_'.$this->config->db].'.sql.gz"');
+             }
+
+            $this->cli->br();
+            $this->out('Completed', 'success');
+        } else {
+            $this->out('mysqldump not found. Please check your path.', 'error');
+        }
     }
 
     public function out($message, $style = 'info')
     {
         switch ($style) {
-        case 'info':
-            $this->cli->blue($message);
-            break;
-        case 'success':
-            $this->cli->green($message);
-            break;
-        case 'error':
-            $this->cli->red($message);
-            break;
+            case 'info':
+                $this->cli->blue($message);
+                break;
+            case 'success':
+                $this->cli->green($message);
+                break;
+            case 'error':
+                $this->cli->red($message);
+                break;
         }
+    }
+
+    public function loadConfig()
+    {
+        $this->config = json_decode(file_get_contents('config.json'));
+    }
+
+    public function databaseSetup()
+    {
+        try {
+            $conn = new \PDO("mysql:host=".$this->config->host.";dbname=".$this->config->db, $this->config->user, $this->config->pass);
+            $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            
+            $this->db = $conn;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function listTables()
+    {
+        $stmt = $this->db->prepare('SHOW TABLES'); 
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC); // set the resulting array to associative
+        $stmt->execute();
+            
+        return $stmt->fetchAll();
+    }
+
+    public function mysqldumpExists()
+    {
+        return file_exists($this->config->mysqldump);
+    }
+
+    public function setLocalAdapter()
+    {
+        $this->localAdapter = new Filesystem(new Local($this->dump_folder));
     }
 }
