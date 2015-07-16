@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "343a8baaeaf0355b7c4e3b4afbf656f7",
+    "hash": "a4fa39c5aefefc1555f9f9b504a855e0",
     "packages": [
         {
             "name": "dropbox/dropbox-sdk",
