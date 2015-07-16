@@ -141,8 +141,8 @@ class mysqldumper extends Command
 
     public function setRemoteAdapter()
     {
-        $client = new Client('ACCESS_TOKEN', 'APP_SECRET');
-        $adapter = new DropboxAdapter($client, 'test');
+        $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
+        $adapter = new DropboxAdapter($client);
         $this->remoteAdapter = new Filesystem($adapter);
     }
 }

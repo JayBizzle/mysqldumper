@@ -3,5 +3,9 @@
   "host": "HOSTNAME",
   "db":   "DATABASE",
   "user": "USER",
-  "pass": "PASSWORD"
+  "pass": "PASSWORD",
+   "dropbox": {
+  	"accesstoken": "ACCESSTOKEN",
+  	"appsecret": "APPSECRET"
+  }
 }
