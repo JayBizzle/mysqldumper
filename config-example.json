@@ -1,4 +1,5 @@
 {
+  "mysqldump": "/path/to/mysqldump",
   "host": "HOSTNAME",
   "db":   "DATABASE",
   "user": "USER",

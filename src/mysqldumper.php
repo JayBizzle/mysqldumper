@@ -40,9 +40,10 @@ class mysqldumper extends Command
 
     public function mysqldumper()
     {
+        $dump_folder= getcwd().'/dump';
         $start_dump = date('YmdHi');
         $config     = json_decode(file_get_contents('config.json'));
-        $adapter    = new Local(__DIR__.'/../dump');
+        $adapter    = new Local($dump_folder);
         $filesystem = new Filesystem($adapter);
         $filesystem->createDir('/'.$start_dump);
         try {
@@ -59,7 +60,7 @@ class mysqldumper extends Command
             foreach($table_list as $table)
             {
                 $progress->advance(1, '<light_green>('.$i.' of '.$table_count.') Dumping '.$table['Tables_in_'.$config->db].'</light_green>');
-                exec('/Applications/MAMP/Library/bin/mysqldump --user='.$config->user.' --password='.$config->pass.' --host='.$config->host.' '.$config->db.' '.$table['Tables_in_'.$config->db].' | gzip > dump/'.$start_dump.'/'.$table['Tables_in_'.$config->db].'.sql.gz', $output);
+                exec($config->mysqldump.' --user='.$config->user.' --password='.$config->pass.' --host='.$config->host.' '.$config->db.' '.$table['Tables_in_'.$config->db].' | gzip > '.$dump_folder.'/'.$start_dump.'/'.$table['Tables_in_'.$config->db].'.sql.gz', $output);
                 $i++;
             }
         }
@@ -67,7 +68,8 @@ class mysqldumper extends Command
             echo "Error: " . $e->getMessage();
         }
 
-        $this->out('completed', 'success');
+        $this->cli->br();
+        $this->out('Completed', 'success');
     }
 
     public function out($message, $style = 'info')
