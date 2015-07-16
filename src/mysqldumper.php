@@ -51,7 +51,7 @@ class mysqldumper extends Command
 
     public function mysqldumper()
     {
-        if($this->mysqldumpExists()) {
+        if ($this->mysqldumpExists()) {
             $start_dump = date('YmdHi');
        
             $this->localAdapter->createDir('/'.$start_dump);
@@ -60,15 +60,15 @@ class mysqldumper extends Command
 
             $table_count = count($table_list);
 
-           $this->cli->dump($table_list);
+            $this->cli->dump($table_list);
 
             $progress = $this->cli->progress()->total($table_count);
 
-            for($i = 0; $i < $table_count; $i++) {
+            for ($i = 0; $i < $table_count; $i++) {
                 //$this->cli->out($i, 'error');
                 $progress->advance(1, '<light_green>('.$i.' of '.$table_count.') Dumping '.$table_list[$i]['Tables_in_'.$this->config->db].'</light_green>');
                 exec($this->config->mysqldump.' --user='.$this->config->user.' --password='.$this->config->pass.' --host='.$this->config->host.' '.$this->config->db.' '.$table_list[$i]['Tables_in_'.$this->config->db].' | gzip > "'.$this->dump_folder.'/'.$start_dump.'/'.$table_list[$i]['Tables_in_'.$this->config->db].'.sql.gz"');
-             }
+            }
 
             $this->cli->br();
             $this->out('Completed', 'success');
@@ -104,15 +104,14 @@ class mysqldumper extends Command
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             
             $this->db = $conn;
-        }
-        catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }
 
     public function listTables()
     {
-        $stmt = $this->db->prepare('SHOW TABLES'); 
+        $stmt = $this->db->prepare('SHOW TABLES');
         $stmt->setFetchMode(\PDO::FETCH_ASSOC); // set the resulting array to associative
         $stmt->execute();
             
