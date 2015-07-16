@@ -65,8 +65,6 @@ class mysqldumper extends Command
 
             $table_count = count($table_list);
 
-            $this->cli->dump($table_list);
-
             $progress = $this->cli->progress()->total($table_count);
 
             for ($i = 0; $i < $table_count; $i++) {
