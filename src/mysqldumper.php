@@ -80,8 +80,9 @@ class mysqldumper extends Command
         }
         $files = $this->localAdapter->listContents('./'.$start_dump);
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $contents = $this->localAdapter->read('./'.$start_dump.'/'.$file['basename']);
+            $this->out('Uploading '.$file['basename'].' ('.$this->localAdapter->getSize('./'.$start_dump.'/'.$file['basename']).')', 'success');
             $this->remoteAdapter->write('./'.$start_dump.'/'.$file['basename'], $contents);
         }
     }
