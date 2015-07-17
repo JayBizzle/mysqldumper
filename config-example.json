@@ -4,7 +4,9 @@
   "db":   "DATABASE",
   "user": "USER",
   "pass": "PASSWORD",
-   "dropbox": {
+  "keepfor": "7 days",
+  "driver": "dropbox",
+  "dropbox": {
   	"accesstoken": "ACCESSTOKEN",
   	"appsecret": "APPSECRET"
   }
