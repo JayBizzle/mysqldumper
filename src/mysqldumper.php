@@ -28,11 +28,11 @@ class mysqldumper extends Command
     {
         parent::__construct();
         $this->cli = $cli;
-        $this->dump_folder = getcwd().'/dump';
         $this->loadConfig();
         $this->databaseSetup();
-        $this->setLocalAdapter();
-        $this->setRemoteAdapter();
+
+        $this->localAdapter = $this->setLocalAdapter();
+        $this->remoteAdapter = $this->setRemoteAdapter();
     }
 
     protected function configure()
@@ -56,34 +56,56 @@ class mysqldumper extends Command
 
     public function mysqldumper()
     {
-        if ($this->mysqldumpExists()) {
-            $start_dump = date('YmdHi');
-       
-            $this->localAdapter->createDir('/'.$start_dump);
-
-            $table_list = $this->listTables();
-
-            $table_count = count($table_list);
-
-            $progress = $this->cli->progress()->total($table_count);
-
-            for ($i = 0; $i < $table_count; $i++) {
-                $progress->advance(1, '<light_green>('.$i.' of '.$table_count.') Dumping '.$table_list[$i]['Tables_in_'.$this->config->db].'</light_green>');
-                exec($this->config->mysqldump.' --user='.$this->config->user.' --password='.$this->config->pass.' --host='.$this->config->host.' '.$this->config->db.' '.$table_list[$i]['Tables_in_'.$this->config->db].' | gzip > "'.$this->dump_folder.'/'.$start_dump.'/'.$table_list[$i]['Tables_in_'.$this->config->db].'.sql.gz"');
-            }
-
-            $this->cli->br();
-            $this->out('Completed', 'success');
-        } else {
+        if (!$this->mysqldumpExists()) {
             $this->out('mysqldump not found. Please check your path.', 'error');
+            die;
         }
-        $files = $this->localAdapter->listContents('./'.$start_dump);
 
-        foreach ($files as $file) {
-            $contents = $this->localAdapter->read('./'.$start_dump.'/'.$file['basename']);
-            $this->out('Uploading '.$file['basename'].' ('.$this->localAdapter->getSize('./'.$start_dump.'/'.$file['basename']).')', 'success');
-            $this->remoteAdapter->write('./'.$start_dump.'/'.$file['basename'], $contents);
+        $this->archive_folder = date('YmdHi');
+   
+        $this->localAdapter->createDir($this->relativeDumpPath());
+
+        $table_list = $this->listTables();
+
+        $table_count = count($table_list);
+
+        $progress = $this->cli->progress()->total($table_count);
+
+        for ($i = 0; $i < $table_count; $i++) {
+            $table_name = $table_list[$i]['Tables_in_'.$this->config->db];
+
+            $progress->advance(1, $this->parseString('(%s of %s) Dumping %s', [($i+1), $table_count, $table_name], 'light_green'));
+
+            $command = $this->buildCommand($table_name);
+            exec($command);
         }
+
+        $this->cli->br();
+        $this->out('Completed', 'success');
+
+        $this->deployToRemote();
+    }
+
+    public function relativeDumpPath()
+    {
+        return './dump/'.$this->archive_folder.'/';
+    }
+
+    public function fullDumpPath()
+    {
+        return getcwd().'/dump/'.$this->archive_folder.'/';
+    }
+
+    public function parseString($string, $params = [], $color = null) {
+        if(empty($params)) {
+            return $string;
+        }
+
+        if(!is_null($color)) {
+            return '<'.$color.'>'.vsprintf($string, $params).'</'.$color.'>';
+        }
+
+        return vsprintf($string, $params);
     }
 
     public function out($message, $style = 'info')
@@ -98,6 +120,33 @@ class mysqldumper extends Command
             case 'error':
                 $this->cli->red($message);
                 break;
+        }
+    }
+
+    public function buildCommand($table_name)
+    {
+        $command_parts[] = $this->config->mysqldump;
+        $command_parts[] = '--user='.$this->config->user;
+        $command_parts[] = '--password='.$this->config->pass;
+        $command_parts[] = '--host='.$this->config->host.' '.$this->config->db.' '.$table_name;
+        $command_parts[] = '| gzip > "'.$this->fullDumpPath().$table_name.'.sql.gz"';
+
+        return implode(' ', $command_parts);
+    }
+
+    public function deployToRemote()
+    {
+        $localPath = $this->relativeDumpPath();
+
+        $files = $this->localAdapter->listContents($localPath);
+
+        foreach ($files as $file) {
+            $contents = $this->localAdapter->read($localPath.$file['basename']);
+
+            $fileSize = $this->localAdapter->getSize($localPath.$file['basename']);
+
+            $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $fileSize], 'light_green'));
+            $this->remoteAdapter->write($localPath.$file['basename'], $contents);
         }
     }
 
@@ -134,13 +183,18 @@ class mysqldumper extends Command
 
     public function setLocalAdapter()
     {
-        $this->localAdapter = new Filesystem(new Local($this->dump_folder));
+        return new Filesystem(new Local($this->dump_folder));
     }
 
     public function setRemoteAdapter()
     {
+        return $this->{'create'.ucfirst($this->config->driver).'Driver'}();
+    }
+
+    public function createDropboxDriver()
+    {
         $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
         $adapter = new DropboxAdapter($client);
-        $this->remoteAdapter = new Filesystem($adapter);
+        return new Filesystem($adapter);
     }
 }
