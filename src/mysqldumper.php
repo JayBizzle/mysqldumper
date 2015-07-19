@@ -88,12 +88,17 @@ class mysqldumper extends Command
 
     public function relativeDumpPath()
     {
-        return './dump/'.$this->archive_folder.'/';
+        return $this->dumpPath(true);
     }
 
-    public function fullDumpPath()
+    public function dumpPath($relative = false)
     {
-        return getcwd().'/dump/'.$this->archive_folder.'/';
+        $basePath = '/dump/'.$this->archive_folder.'/';
+        if($relative) {
+            return '.'.$basePath;
+        } else {
+            return getcwd().$basePath;
+        }
     }
 
     public function parseString($string, $params = [], $color = null) {
@@ -129,7 +134,7 @@ class mysqldumper extends Command
         $command_parts[] = '--user='.$this->config->user;
         $command_parts[] = '--password='.$this->config->pass;
         $command_parts[] = '--host='.$this->config->host.' '.$this->config->db.' '.$table_name;
-        $command_parts[] = '| gzip > "'.$this->fullDumpPath().$table_name.'.sql.gz"';
+        $command_parts[] = '| gzip > "'.$this->dumpPath().$table_name.'.sql.gz"';
 
         return implode(' ', $command_parts);
     }
