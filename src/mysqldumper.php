@@ -24,6 +24,11 @@ class mysqldumper extends Command
 
     protected $db;
 
+    /**
+     * Create a new mysqldumper instance.
+     * 
+     * @param CLImate $cli
+     */
     public function __construct(CLImate $cli)
     {
         parent::__construct();
@@ -35,6 +40,11 @@ class mysqldumper extends Command
         $this->remoteAdapter = $this->setRemoteAdapter();
     }
 
+    /**
+     * Configure the command.
+     * 
+     * @return void
+     */
     protected function configure()
     {
         $this->setName('dump')->setDescription('Dump the data');
@@ -49,11 +59,23 @@ class mysqldumper extends Command
         // );
     }
 
+    /**
+     * Excute the command.
+     * 
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->mysqldumper();
     }
 
+    /**
+     * The body of the command.
+     * 
+     * @return void
+     */
     public function mysqldumper()
     {
         if (!$this->mysqldumpExists()) {
@@ -86,11 +108,22 @@ class mysqldumper extends Command
         $this->deployToRemote();
     }
 
+    /**
+     * Return a path relative to the .phar root.
+     * 
+     * @return string
+     */
     public function relativeDumpPath()
     {
         return $this->dumpPath(true);
     }
 
+    /**
+     * Return the path to the dump folder.
+     * 
+     * @param  boolean $relative
+     * @return string
+     */
     public function dumpPath($relative = false)
     {
         $basePath = '/dump/'.$this->archive_folder.'/';
@@ -101,6 +134,14 @@ class mysqldumper extends Command
         }
     }
 
+    /**
+     * Parse strings with passed variables.
+     * 
+     * @param  string $string
+     * @param  array  $params
+     * @param  string $color
+     * @return string
+     */
     public function parseString($string, $params = [], $color = null) {
         if(empty($params)) {
             return $string;
@@ -113,6 +154,13 @@ class mysqldumper extends Command
         return vsprintf($string, $params);
     }
 
+    /**
+     * Output messages to the terminal.
+     * 
+     * @param  string $message
+     * @param  string $style
+     * @return void
+     */
     public function out($message, $style = 'info')
     {
         switch ($style) {
@@ -128,6 +176,12 @@ class mysqldumper extends Command
         }
     }
 
+    /**
+     * Build the mysqldump command.
+     * 
+     * @param  string $table_name
+     * @return string
+     */
     public function buildCommand($table_name)
     {
         $command_parts[] = $this->config->mysqldump;
@@ -139,6 +193,11 @@ class mysqldumper extends Command
         return implode(' ', $command_parts);
     }
 
+    /**
+     * Deploy files to the remote filesystem.
+     * 
+     * @return void
+     */
     public function deployToRemote()
     {
         $localPath = $this->relativeDumpPath();
@@ -155,11 +214,21 @@ class mysqldumper extends Command
         }
     }
 
+    /**
+     * Load config.
+     * 
+     * @return void
+     */
     public function loadConfig()
     {
         $this->config = json_decode(file_get_contents('config.json'));
     }
 
+    /**
+     * Setup a PDO connection to the database.
+     * 
+     * @return void
+     */
     public function databaseSetup()
     {
         try {
@@ -172,6 +241,11 @@ class mysqldumper extends Command
         }
     }
 
+    /**
+     * Get all tables in the database.
+     * 
+     * @return array
+     */
     public function listTables()
     {
         $stmt = $this->db->prepare('SHOW TABLES');
@@ -181,21 +255,41 @@ class mysqldumper extends Command
         return $stmt->fetchAll();
     }
 
+    /**
+     * Check if the mysqldumo dump command path exists.
+     * 
+     * @return boolean
+     */
     public function mysqldumpExists()
     {
         return file_exists($this->config->mysqldump);
     }
 
+    /**
+     * Set the local filesystem adapter.
+     *
+     * @return League\Flysystem\Filesystem
+     */
     public function setLocalAdapter()
     {
         return new Filesystem(new Local($this->dump_folder));
     }
 
+    /**
+     * Create an instance of the specified remote adapter.
+     *
+     * @return  League\Flysystem\Filesystem
+     */
     public function setRemoteAdapter()
     {
         return $this->{'create'.ucfirst($this->config->driver).'Driver'}();
     }
 
+    /**
+     * Create Dropbox connection.
+     * 
+     * @return League\Flysystem\Filesystem
+     */
     public function createDropboxDriver()
     {
         $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
