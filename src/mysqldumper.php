@@ -275,7 +275,7 @@ class mysqldumper extends Command
      */
     public function setLocalAdapter()
     {
-        return new Filesystem(new Local($this->dump_folder));
+        return new Filesystem(new Local('./'));
     }
 
     /**
