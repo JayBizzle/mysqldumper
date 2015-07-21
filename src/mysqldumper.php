@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class mysqldumper extends Command
 {
@@ -42,16 +43,14 @@ class mysqldumper extends Command
      */
     protected function configure()
     {
-        $this->setName('dump')->setDescription('Dump the data');
-        // ->addArgument(
-        //     'env',
-        //     InputArgument::REQUIRED,
-        //     'Required option'
-        // )->addArgument(
-        //     'destination',
-        //     InputArgument::OPTIONAL,
-        //     'optional argument?'
-        // );
+        $this->setName('dump')->setDescription('Dump the data')
+             ->addOption(
+                'dir',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The directory to output the mysql dumps',
+                'woop'
+            );
     }
 
     /**
