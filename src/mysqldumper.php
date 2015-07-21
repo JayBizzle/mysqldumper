@@ -33,13 +33,6 @@ class mysqldumper extends Command
     {
         parent::__construct();
         $this->cli = $cli;
-        $this->loadConfig();
-        $this->databaseSetup();
-
-        $this->dump_folder = './dump';
-
-        $this->localAdapter = $this->setLocalAdapter();
-        $this->remoteAdapter = $this->setRemoteAdapter();
     }
 
     /**
@@ -70,6 +63,15 @@ class mysqldumper extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // setup options
+        $this->dump_folder = './'.$input->getOption('dir').'/';
+
+        $this->loadConfig();
+        $this->databaseSetup();
+
+        $this->localAdapter = $this->setLocalAdapter();
+        $this->remoteAdapter = $this->setRemoteAdapter();
+
         $this->mysqldumper();
     }
 
