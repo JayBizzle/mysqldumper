@@ -36,6 +36,8 @@ class mysqldumper extends Command
         $this->loadConfig();
         $this->databaseSetup();
 
+        $this->dump_folder = './dump';
+
         $this->localAdapter = $this->setLocalAdapter();
         $this->remoteAdapter = $this->setRemoteAdapter();
     }
