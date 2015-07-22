@@ -1,5 +1,12 @@
-# mysqldumper
-Create MySQL dumps and upload to Dropbox
+# MySQL Dumper
+Create MySQL dumps and upload to Dropbox/FTP
+
+## Options
+```bash
+      --dir=DIR         The directory to output the mysql dumps [default: "archive"]
+      --keep-local      Keep local dumps when backup is complete
+      --skip-remote     Skip uploading files to remote
+```
 
 ## Test without having to build the phar
 ```bash
