@@ -8,6 +8,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Gradcracker\\Console\\": "src/",
             "Gradcracker\\Console\\Command\\": "src/"
         }
     }

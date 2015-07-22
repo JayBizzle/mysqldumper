@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class mysqldumper extends Command
+class MySQLDumperCommand extends Command
 {
     protected $cli;
  
@@ -47,7 +47,7 @@ class mysqldumper extends Command
              ->addOption(
                 'dir',
                 null,
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'The directory to output the mysql dumps',
                 'woop'
             );
@@ -63,7 +63,7 @@ class mysqldumper extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // setup options
-        $this->dump_folder = './'.$input->getOption('dir').'/';
+        $this->dump_folder = $input->getOption('dir');
 
         $this->loadConfig();
         $this->databaseSetup();
@@ -129,7 +129,7 @@ class mysqldumper extends Command
      */
     public function dumpPath($relative = false)
     {
-        $basePath = '/dump/'.$this->archive_folder.'/';
+        $basePath = '/'.$this->dump_folder.'/'.$this->archive_folder.'/';
         if($relative) {
             return '.'.$basePath;
         } else {

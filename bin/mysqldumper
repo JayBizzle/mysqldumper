@@ -3,22 +3,11 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use Symfony\Component\Console\Application;
+use Gradcracker\Console\MySQLDumperApplication;
 use Gradcracker\Console\Command\mysqldumper;
 
-// Create a new dependency injection container
-$container = new League\Container\Container;
-
 // Get new instance from our container
-$mysqldumper = $container->get('Gradcracker\\Console\\Command\\mysqldumper');
+$application = new MySQLDumperApplication();
 
-// Create new console application
-$application = new Application('mysqldumper', '0.1-dev');
-
-// Add our mysqldumper command to the applications
-$application->add($mysqldumper);
-
-// Set a default command when no command is specified
-$application->setDefaultCommand($mysqldumper->getName());
-
+// Run the command
 $application->run();
