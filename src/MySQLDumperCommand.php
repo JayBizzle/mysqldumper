@@ -60,6 +60,11 @@ class MySQLDumperCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Skip uploading files to remote'
+            )->addOption(
+                'ignore-table',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Skip tables during dump'
             );
     }
 
