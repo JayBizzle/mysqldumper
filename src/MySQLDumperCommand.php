@@ -43,7 +43,7 @@ class MySQLDumperCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('dump')->setDescription('Dump the data')
+        $this->setName('mysqldumper')->setDescription('Dump the data')
              ->addOption(
                 'dir',
                 null,

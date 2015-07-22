@@ -18,7 +18,7 @@ class MySQLDumperApplication extends Application
     protected function getCommandName(InputInterface $input)
     {
         // This should return the name of your command.
-        return 'dump';
+        return 'mysqldumper';
     }
 
     /**
