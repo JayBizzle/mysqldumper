@@ -49,7 +49,7 @@ class MySQLDumperCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'The directory to output the mysql dumps',
-                'woop'
+                'archive'
             );
     }
 
