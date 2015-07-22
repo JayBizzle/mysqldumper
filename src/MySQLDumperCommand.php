@@ -50,6 +50,16 @@ class MySQLDumperCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'The directory to output the mysql dumps',
                 'archive'
+            )->addOption(
+                'keep-local',
+                null,
+                InputOption::VALUE_NONE,
+                'Keep local dumps when backup is complete'
+            )->addOption(
+                'skip-remote',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip uploading files to remote'
             );
     }
 
