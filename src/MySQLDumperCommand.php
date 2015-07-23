@@ -126,7 +126,7 @@ class MySQLDumperCommand extends Command
         $this->cli->br();
         $this->out('Dump complete', 'success');
 
-        if(!$this->skip_remote) {
+        if (!$this->skip_remote) {
             $this->out('Uploading to remote', 'success');
             $this->deployToRemote();
         } else {
@@ -144,7 +144,7 @@ class MySQLDumperCommand extends Command
      */
     public function cleanupLocal()
     {
-        if(!$this->keep_local) {
+        if (!$this->keep_local) {
             $local_path = $localPath = $this->relativeDumpPath();
 
             $this->localAdapter->deleteDir($local_path);
@@ -158,15 +158,15 @@ class MySQLDumperCommand extends Command
      */
     public function cleanupRemote()
     {
-        if(isset($this->config->keepfor)) {
+        if (isset($this->config->keepfor)) {
             $remotePath = './'.$this->dump_folder;
 
             $directories = $this->remoteAdapter->listContents($remotePath);
 
             $timestamp = date('YmdHi', (time()-(time()-strtotime($this->config->keepfor.' ago'))));
 
-            foreach($directories as $dir) {
-                if($dir['filename'] < $timestamp) {
+            foreach ($directories as $dir) {
+                if ($dir['filename'] < $timestamp) {
                     $this->remoteAdapter->deleteDir($dir['path']);
                 }
             }
@@ -192,7 +192,7 @@ class MySQLDumperCommand extends Command
     public function dumpPath($relative = false)
     {
         $basePath = '/'.$this->dump_folder.'/'.$this->archive_folder.'/';
-        if($relative) {
+        if ($relative) {
             return '.'.$basePath;
         } else {
             return getcwd().$basePath;
@@ -207,12 +207,13 @@ class MySQLDumperCommand extends Command
      * @param  string $color
      * @return string
      */
-    public function parseString($string, $params = [], $color = null) {
-        if(empty($params)) {
+    public function parseString($string, $params = [], $color = null)
+    {
+        if (empty($params)) {
             return $string;
         }
 
-        if(!is_null($color)) {
+        if (!is_null($color)) {
             return '<'.$color.'>'.vsprintf($string, $params).'</'.$color.'>';
         }
 
@@ -289,12 +290,12 @@ class MySQLDumperCommand extends Command
      */
     public function loadConfig()
     {
-        if(!file_exists('mysqldumper.json')) {
+        if (!file_exists('mysqldumper.json')) {
             $this->out('No mysqldumper.json found', 'error');
             die;
         } else {
             $this->config = json_decode(file_get_contents('mysqldumper.json'));
-        }   
+        }
     }
 
     /**
@@ -339,7 +340,7 @@ class MySQLDumperCommand extends Command
     {
         $query = 'show tables';
 
-        if(!empty($this->ignore_table)) {
+        if (!empty($this->ignore_table)) {
             $query_parts[] = $query;
             $query_parts[] = 'where Tables_in_'.$this->config->db;
             $query_parts[] = 'not in ("'.implode('","', $this->ignore_table).'")';
