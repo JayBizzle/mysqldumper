@@ -136,7 +136,7 @@ class MySQLDumperCommand extends Command
         $this->cleanupLocal();
 
     /**
-     * Clean up local files
+     * Clean up local files.
      * 
      * @return void
      */
@@ -308,7 +308,7 @@ class MySQLDumperCommand extends Command
     }
 
     /**
-     * Build the list tables query
+     * Build the list tables query.
      * 
      * @return string
      */
