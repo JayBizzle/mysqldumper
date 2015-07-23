@@ -124,7 +124,7 @@ class MySQLDumperCommand extends Command
         }
 
         $this->cli->br();
-        $this->out('Completed', 'success');
+        $this->out('Dump complete', 'success');
 
         if(!$this->skip_remote) {
             $this->out('Uploading to remote', 'success');
