@@ -250,7 +250,12 @@ class MySQLDumperCommand extends Command
      */
     public function loadConfig()
     {
-        $this->config = json_decode(file_get_contents('mysqldumper.json'));
+        if(!file_exists('mysqldumper.json')) {
+            $this->out('No mysqldumper.json found', 'error');
+            die;
+        } else {
+            $this->config = json_decode(file_get_contents('mysqldumper.json'));
+        }   
     }
 
     /**
