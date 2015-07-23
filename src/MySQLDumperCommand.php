@@ -145,7 +145,7 @@ class MySQLDumperCommand extends Command
     public function cleanupLocal()
     {
         if (!$this->keep_local) {
-            $local_path = $localPath = $this->relativeDumpPath();
+            $local_path = $this->relativeDumpPath();
 
             $this->localAdapter->deleteDir($local_path);
         }
