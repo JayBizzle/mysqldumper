@@ -192,6 +192,9 @@ class MySQLDumperCommand extends Command
             case 'error':
                 $this->cli->red($message);
                 break;
+            case 'warning':
+                $this->cli->yellow($message);
+                break;
         }
     }
 
