@@ -250,7 +250,7 @@ class MySQLDumperCommand extends Command
      */
     public function loadConfig()
     {
-        $this->config = json_decode(file_get_contents('config.json'));
+        $this->config = json_decode(file_get_contents('mysqldumper.json'));
     }
 
     /**
