@@ -79,6 +79,8 @@ class MySQLDumperCommand extends Command
     {
         // setup options
         $this->dump_folder = $input->getOption('dir');
+        $this->keep_local = $input->getOption('keep-local');
+        $this->skip_remote = $input->getOption('skip-remote');
         $this->ignore_table = $input->getOption('ignore-table');
 
         $this->loadConfig();
@@ -124,7 +126,12 @@ class MySQLDumperCommand extends Command
         $this->cli->br();
         $this->out('Completed', 'success');
 
-        $this->deployToRemote();
+        if(!$this->skip_remote) {
+            $this->out('Uploading to remote', 'success');
+            $this->deployToRemote();
+        } else {
+            $this->out('Skipping remote upload', 'warning');
+        }
     }
 
     /**
