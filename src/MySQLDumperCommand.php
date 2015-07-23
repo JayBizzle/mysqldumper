@@ -132,6 +132,22 @@ class MySQLDumperCommand extends Command
         } else {
             $this->out('Skipping remote upload', 'warning');
         }
+
+        $this->cleanupLocal();
+
+    /**
+     * Clean up local files
+     * 
+     * @return void
+     */
+    public function cleanupLocal()
+    {
+        if(!$this->keep_local) {
+            $local_path = $localPath = $this->relativeDumpPath();
+
+            $this->localAdapter->deleteDir($local_path);
+        }
+    }
     }
 
     /**
