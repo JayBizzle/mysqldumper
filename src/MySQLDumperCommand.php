@@ -134,6 +134,8 @@ class MySQLDumperCommand extends Command
         }
 
         $this->cleanupLocal();
+        $this->cleanupRemote();
+    }
 
     /**
      * Clean up local files.
@@ -148,6 +150,27 @@ class MySQLDumperCommand extends Command
             $this->localAdapter->deleteDir($local_path);
         }
     }
+
+    /**
+     * Clean up remote files
+     * 
+     * @return void
+     */
+    public function cleanupRemote()
+    {
+        if(isset($this->config->keepfor)) {
+            $remotePath = './'.$this->dump_folder;
+
+            $directories = $this->remoteAdapter->listContents($remotePath);
+
+            $timestamp = date('YmdHi', (time()-(time()-strtotime($this->config->keepfor.' ago'))));
+
+            foreach($directories as $dir) {
+                if($dir['filename'] < $timestamp) {
+                    $this->remoteAdapter->deleteDir($dir['path']);
+                }
+            }
+        }
     }
 
     /**
