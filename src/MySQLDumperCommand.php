@@ -269,17 +269,17 @@ class MySQLDumperCommand extends Command
      */
     public function deployToRemote()
     {
-        $localPath = $this->relativeDumpPath();
+        $local_path = $this->relativeDumpPath();
 
-        $files = $this->localAdapter->listContents($localPath);
+        $files = $this->localAdapter->listContents($local_path);
 
         foreach ($files as $file) {
-            $contents = $this->localAdapter->read($localPath.$file['basename']);
+            $contents = $this->localAdapter->read($local_path.$file['basename']);
 
-            $fileSize = $this->localAdapter->getSize($localPath.$file['basename']);
+            $file_size = $this->localAdapter->getSize($local_path.$file['basename']);
 
-            $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $fileSize], 'light_green'));
-            $this->remoteAdapter->write($localPath.$file['basename'], $contents);
+            $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $file_size], 'light_green'));
+            $this->remoteAdapter->write($local_path.$file['basename'], $contents);
         }
     }
 
