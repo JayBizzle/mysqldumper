@@ -79,6 +79,7 @@ class MySQLDumperCommand extends Command
     {
         // setup options
         $this->dump_folder = $input->getOption('dir');
+        $this->ignore_table = $input->getOption('ignore-table');
 
         $this->loadConfig();
         $this->databaseSetup();
@@ -266,11 +267,32 @@ class MySQLDumperCommand extends Command
      */
     public function listTables()
     {
-        $stmt = $this->db->prepare('SHOW TABLES');
+        $query = $this->buildQuery();
+
+        $stmt = $this->db->prepare($query);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC); // set the resulting array to associative
         $stmt->execute();
             
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Build the list tables query
+     * 
+     * @return string
+     */
+    public function buildQuery()
+    {
+        $query = 'show tables';
+
+        if(!empty($this->ignore_table)) {
+            $query_parts[] = $query;
+            $query_parts[] = 'where Tables_in_'.$this->config->db;
+            $query_parts[] = 'not in ("'.implode('","', $this->ignore_table).'")';
+            return implode(' ', $query_parts);
+        } else {
+            return $query;
+        }
     }
 
     /**
