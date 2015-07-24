@@ -5,6 +5,7 @@ namespace Gradcracker\Console\Command;
 use Dropbox\Client;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Dropbox\DropboxAdapter;
 use Symfony\Component\Console\Command\Command;
@@ -450,6 +451,28 @@ class MySQLDumperCommand extends Command
     {
         $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
         $adapter = new DropboxAdapter($client);
+        return new Filesystem($adapter);
+    }
+
+    /**
+     * Create FTP connection.
+     * 
+     * @return League\Flysystem\Filesystem
+     */
+    public function createFtpDriver()
+    {
+        $adapter = new FTP([
+            'host' => $this->config->ftp->host,
+            'username' => $this->config->ftp->username,
+            'password' => $this->config->ftp->password,
+
+            // optional config settings
+            'port' => $this->config->ftp->port ?: 21,
+            'root' => $this->config->ftp->root ?: './',
+            'passive' => $this->config->ftp->passive ?: true,
+            'ssl' => $this->config->ftp->ssl ?: true,
+            'timeout' => $this->config->ftp->timeout ?: 30,
+        ]);
         return new Filesystem($adapter);
     }
 }
