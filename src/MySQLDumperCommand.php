@@ -137,7 +137,8 @@ class MySQLDumperCommand extends Command
         $this->ignore_table = $input->getOption('ignore-table');
 
         $this->config = $this->loadConfig();
-        $this->databaseSetup();
+
+        $this->db = $this->databaseSetup();
 
         $this->localAdapter = $this->setLocalAdapter();
         $this->remoteAdapter = $this->setRemoteAdapter();
@@ -369,7 +370,7 @@ class MySQLDumperCommand extends Command
             $conn = new \PDO("mysql:host=".$this->config->host.";dbname=".$this->config->db, $this->config->user, $this->config->pass);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             
-            $this->db = $conn;
+            return $conn;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
