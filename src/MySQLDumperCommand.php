@@ -83,7 +83,7 @@ class MySQLDumperCommand extends Command
         $this->skip_remote = $input->getOption('skip-remote');
         $this->ignore_table = $input->getOption('ignore-table');
 
-        $this->loadConfig();
+        $this->config = $this->loadConfig();
         $this->databaseSetup();
 
         $this->localAdapter = $this->setLocalAdapter();
@@ -294,7 +294,7 @@ class MySQLDumperCommand extends Command
             $this->out('No mysqldumper.json found', 'error');
             die;
         } else {
-            $this->config = json_decode(file_get_contents('mysqldumper.json'));
+            return $this->config = json_decode(file_get_contents('mysqldumper.json'));
         }
     }
 
