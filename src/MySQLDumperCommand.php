@@ -15,15 +15,68 @@ use Symfony\Component\Console\Input\InputOption;
 
 class MySQLDumperCommand extends Command
 {
+    /**
+     * The cli instance
+     * 
+     * @var League\CLImate\CLImate
+     */
     protected $cli;
  
+    /**
+     * The loaded config
+     * 
+     * @var object
+     */
     protected $config;
 
+    /**
+     * Local filesystem adapter
+     * 
+     * @var League\Flysystem\Filesystem
+     */
     protected $localAdapter;
 
+    /**
+     * Remote filesystem adapter
+     * 
+     * @var League\Flysystem\Filesystem
+     */
     protected $remoteAdapter;
 
+    /**
+     * The database connection
+     * 
+     * @var \PDO
+     */
     protected $db;
+
+    /**
+     * The dated archive output folder
+     * 
+     * @var string
+     */
+    protected $archive_folder;
+
+    /**
+     * Keep local copies of dumps
+     * 
+     * @var boolean
+     */
+    protected $keep_local = false;
+
+    /**
+     * Skip the remote upload
+     * 
+     * @var boolean
+     */
+    protected $skip_remote = false;
+
+    /**
+     * Array of tables to ignore
+     * 
+     * @var array
+     */
+    protected $ignore_table = [];
 
     /**
      * Create a new mysqldumper instance.
@@ -104,16 +157,22 @@ class MySQLDumperCommand extends Command
             die;
         }
 
+        // Set the name of the dated archive folder
         $this->archive_folder = date('YmdHi');
    
+        // Create the output folder
         $this->localAdapter->createDir($this->relativeDumpPath());
 
+        // Get a list of the tables we are going to dump
         $table_list = $this->listTables();
 
+        // Count tables
         $table_count = count($table_list);
 
+        // Create a progress bar
         $progress = $this->cli->progress()->total($table_count);
 
+        // Loop of tables and create dump
         for ($i = 0; $i < $table_count; $i++) {
             $table_name = $table_list[$i]['Tables_in_'.$this->config->db];
 
@@ -133,6 +192,7 @@ class MySQLDumperCommand extends Command
             $this->out('Skipping remote upload', 'warning');
         }
 
+        // Clean up
         $this->cleanupLocal();
         $this->cleanupRemote();
     }
