@@ -294,7 +294,7 @@ class MySQLDumperCommand extends Command
             $this->out('No mysqldumper.json found', 'error');
             die;
         } else {
-            return $this->config = json_decode(file_get_contents('mysqldumper.json'));
+            return json_decode(file_get_contents('mysqldumper.json'));
         }
     }
 
