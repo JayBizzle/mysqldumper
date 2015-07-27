@@ -1,4 +1,5 @@
 {
+    "name": "jaybizzle/mysqldumper",
     "require": {
         "league/flysystem": "^1.0",
         "league/climate": "^3.1",
