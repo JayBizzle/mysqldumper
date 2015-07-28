@@ -1,0 +1,8 @@
+[
+    {
+        "name": "mysqldumper.phar",
+        "sha1": "47a5e51e877c8dabc423ed2eb004c154cd8af2d9",
+        "url": "https://github.com/JayBizzle/mysqldumper/releases/download/1.0.0/mysqldumper.phar",
+        "version": "1.0.0"
+    }
+]
