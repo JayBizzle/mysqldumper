@@ -19,7 +19,7 @@ class MySQLDumperCommand extends Command
 {
     const MANIFEST_FILE = 'http://jaybizzle.github.io/mysqldumper/manifest.json';
 
-    protected $version = '1.0.0';
+    protected $version = '1.0.1';
 
     /**
      * The cli instance.
@@ -124,6 +124,11 @@ class MySQLDumperCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Skip tables during dump'
+            )->addOption(
+                'self-update',
+                null,
+                InputOption::VALUE_NONE,
+                'Update mysqldumper'
             );
     }
 

@@ -3,6 +3,9 @@
     "directories": [
         "src"
     ],
+    "files": [
+        "vendor/herrera-io/phar-update/res/schema.json"
+    ],
     "main": "bin/mysqldumper",
     "output": "mysqldumper.phar",
     "stub": true,

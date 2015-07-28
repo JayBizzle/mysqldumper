@@ -5,7 +5,8 @@
         "league/climate": "^3.1",
         "symfony/console": "^2.7",
         "league/flysystem-dropbox": "^1.0",
-        "league/container": "^1.3"
+        "league/container": "^1.3",
+        "herrera-io/phar-update": "1.*"
     },
     "autoload": {
         "psr-4": {
