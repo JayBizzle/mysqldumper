@@ -32,7 +32,7 @@ class MySQLDumperApplication extends Application
         // which is used when using the --help option
         $defaultCommands = parent::getDefaultCommands();
 
-        $container = new Container;
+        $container = new Container();
         $defaultCommands[] = $container->get('Gradcracker\\Console\\Command\\MySQLDumperCommand');
 
         return $defaultCommands;

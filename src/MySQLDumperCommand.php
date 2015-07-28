@@ -3,83 +3,82 @@
 namespace Gradcracker\Console\Command;
 
 use Dropbox\Client;
-use League\CLImate\CLImate;
-use League\Flysystem\Filesystem;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
+use League\CLImate\CLImate;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Dropbox\DropboxAdapter;
+use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class MySQLDumperCommand extends Command
 {
     const MANIFEST_FILE = 'http://jaybizzle.github.io/mysqldumper/manifest.json';
 
-    protected $version = "1.0.0";
+    protected $version = '1.0.0';
 
     /**
-     * The cli instance
+     * The cli instance.
      * 
      * @var League\CLImate\CLImate
      */
     protected $cli;
- 
+
     /**
-     * The loaded config
+     * The loaded config.
      * 
      * @var object
      */
     protected $config;
 
     /**
-     * Local filesystem adapter
+     * Local filesystem adapter.
      * 
      * @var League\Flysystem\Filesystem
      */
     protected $localAdapter;
 
     /**
-     * Remote filesystem adapter
+     * Remote filesystem adapter.
      * 
      * @var League\Flysystem\Filesystem
      */
     protected $remoteAdapter;
 
     /**
-     * The database connection
+     * The database connection.
      * 
      * @var \PDO
      */
     protected $db;
 
     /**
-     * The dated archive output folder
+     * The dated archive output folder.
      * 
      * @var string
      */
     protected $archive_folder;
 
     /**
-     * Keep local copies of dumps
+     * Keep local copies of dumps.
      * 
-     * @var boolean
+     * @var bool
      */
     protected $keep_local = false;
 
     /**
-     * Skip the remote upload
+     * Skip the remote upload.
      * 
-     * @var boolean
+     * @var bool
      */
     protected $skip_remote = false;
 
     /**
-     * Array of tables to ignore
+     * Array of tables to ignore.
      * 
      * @var array
      */
@@ -131,8 +130,9 @@ class MySQLDumperCommand extends Command
     /**
      * Excute the command.
      * 
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -150,7 +150,7 @@ class MySQLDumperCommand extends Command
         $this->localAdapter = $this->setLocalAdapter();
         $this->remoteAdapter = $this->setRemoteAdapter();
 
-        if($input->getOption('self-update')) {
+        if ($input->getOption('self-update')) {
             $this->update();
         } else {
             $this->mysqldumper();
@@ -177,7 +177,7 @@ class MySQLDumperCommand extends Command
 
         // Set the name of the dated archive folder
         $this->archive_folder = date('YmdHi');
-   
+
         // Create the output folder
         $this->localAdapter->createDir($this->relativeDumpPath());
 
@@ -194,7 +194,7 @@ class MySQLDumperCommand extends Command
         for ($i = 0; $i < $table_count; $i++) {
             $table_name = $table_list[$i]['Tables_in_'.$this->config->db];
 
-            $progress->advance(1, $this->parseString('(%s of %s) Dumping %s', [($i+1), $table_count, $table_name], 'light_green'));
+            $progress->advance(1, $this->parseString('(%s of %s) Dumping %s', [($i + 1), $table_count, $table_name], 'light_green'));
 
             $command = $this->buildCommand($table_name);
             exec($command);
@@ -230,7 +230,7 @@ class MySQLDumperCommand extends Command
     }
 
     /**
-     * Clean up remote files
+     * Clean up remote files.
      * 
      * @return void
      */
@@ -241,7 +241,7 @@ class MySQLDumperCommand extends Command
 
             $directories = $this->remoteAdapter->listContents($remotePath);
 
-            $timestamp = date('YmdHi', (time()-(time()-strtotime($this->config->keepfor.' ago'))));
+            $timestamp = date('YmdHi', (time() - (time() - strtotime($this->config->keepfor.' ago'))));
 
             foreach ($directories as $dir) {
                 if ($dir['filename'] < $timestamp) {
@@ -264,7 +264,8 @@ class MySQLDumperCommand extends Command
     /**
      * Return the path to the dump folder.
      * 
-     * @param  boolean $relative
+     * @param bool $relative
+     *
      * @return string
      */
     public function dumpPath($relative = false)
@@ -280,9 +281,10 @@ class MySQLDumperCommand extends Command
     /**
      * Parse strings with passed variables.
      * 
-     * @param  string $string
-     * @param  array  $params
-     * @param  string $color
+     * @param string $string
+     * @param array  $params
+     * @param string $color
+     *
      * @return string
      */
     public function parseString($string, $params = [], $color = null)
@@ -301,8 +303,9 @@ class MySQLDumperCommand extends Command
     /**
      * Output messages to the terminal.
      * 
-     * @param  string $message
-     * @param  string $style
+     * @param string $message
+     * @param string $style
+     *
      * @return void
      */
     public function out($message, $style = 'info')
@@ -326,7 +329,8 @@ class MySQLDumperCommand extends Command
     /**
      * Build the mysqldump command.
      * 
-     * @param  string $table_name
+     * @param string $table_name
+     *
      * @return string
      */
     public function buildCommand($table_name)
@@ -384,12 +388,12 @@ class MySQLDumperCommand extends Command
     public function databaseSetup()
     {
         try {
-            $conn = new \PDO("mysql:host=".$this->config->host.";dbname=".$this->config->db, $this->config->user, $this->config->pass);
+            $conn = new \PDO('mysql:host='.$this->config->host.';dbname='.$this->config->db, $this->config->user, $this->config->pass);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            
+
             return $conn;
         } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
+            echo 'Error: '.$e->getMessage();
         }
     }
 
@@ -405,7 +409,7 @@ class MySQLDumperCommand extends Command
         $stmt = $this->db->prepare($query);
         $stmt->setFetchMode(\PDO::FETCH_ASSOC); // set the resulting array to associative
         $stmt->execute();
-            
+
         return $stmt->fetchAll();
     }
 
@@ -422,6 +426,7 @@ class MySQLDumperCommand extends Command
             $query_parts[] = $query;
             $query_parts[] = 'where Tables_in_'.$this->config->db;
             $query_parts[] = 'not in ("'.implode('","', $this->ignore_table).'")';
+
             return implode(' ', $query_parts);
         } else {
             return $query;
@@ -431,7 +436,7 @@ class MySQLDumperCommand extends Command
     /**
      * Check if the mysqldumo dump command path exists.
      * 
-     * @return boolean
+     * @return bool
      */
     public function mysqldumpExists()
     {
@@ -451,7 +456,7 @@ class MySQLDumperCommand extends Command
     /**
      * Create an instance of the specified remote adapter.
      *
-     * @return  League\Flysystem\Filesystem
+     * @return League\Flysystem\Filesystem
      */
     public function setRemoteAdapter()
     {
@@ -467,6 +472,7 @@ class MySQLDumperCommand extends Command
     {
         $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
         $adapter = new DropboxAdapter($client);
+
         return new Filesystem($adapter);
     }
 
@@ -478,17 +484,18 @@ class MySQLDumperCommand extends Command
     public function createFtpDriver()
     {
         $adapter = new FTP([
-            'host' => $this->config->ftp->host,
+            'host'     => $this->config->ftp->host,
             'username' => $this->config->ftp->username,
             'password' => $this->config->ftp->password,
 
             // optional config settings
-            'port' => $this->config->ftp->port ?: 21,
-            'root' => $this->config->ftp->root ?: './',
+            'port'    => $this->config->ftp->port ?: 21,
+            'root'    => $this->config->ftp->root ?: './',
             'passive' => $this->config->ftp->passive ?: true,
-            'ssl' => $this->config->ftp->ssl ?: true,
+            'ssl'     => $this->config->ftp->ssl ?: true,
             'timeout' => $this->config->ftp->timeout ?: 30,
         ]);
+
         return new Filesystem($adapter);
     }
 }
