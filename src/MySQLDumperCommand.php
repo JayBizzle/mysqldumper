@@ -5,6 +5,8 @@ namespace Gradcracker\Console\Command;
 use Dropbox\Client;
 use League\CLImate\CLImate;
 use League\Flysystem\Filesystem;
+use Herrera\Phar\Update\Manager;
+use Herrera\Phar\Update\Manifest;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Dropbox\DropboxAdapter;
@@ -16,6 +18,10 @@ use Symfony\Component\Console\Input\InputOption;
 
 class MySQLDumperCommand extends Command
 {
+    const MANIFEST_FILE = 'http://jaybizzle.github.io/mysqldumper/manifest.json';
+
+    protected $version = "1.0.0";
+
     /**
      * The cli instance
      * 
@@ -144,7 +150,17 @@ class MySQLDumperCommand extends Command
         $this->localAdapter = $this->setLocalAdapter();
         $this->remoteAdapter = $this->setRemoteAdapter();
 
-        $this->mysqldumper();
+        if($input->getOption('self-update')) {
+            $this->update();
+        } else {
+            $this->mysqldumper();
+        }
+    }
+
+    public function update()
+    {
+        $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
+        $manager->update($this->version, true);
     }
 
     /**
