@@ -163,7 +163,11 @@ class MySQLDumperCommand extends Command
     public function update()
     {
         $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-        $manager->update($this->version, true);
+        if ($manager->update($this->version, true)) {
+            $this->out('Updated to latest version!', 'success');
+        } else {
+            $this->out('mysqldumper up-to-date', 'warning');
+        }
     }
 
     /**
