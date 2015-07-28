@@ -140,6 +140,9 @@ class MySQLDumperCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        echo $this->getApplication()->getVersion();
+
+        die();
         // setup options
         $this->dump_folder = $input->getOption('dir');
         $this->keep_local = $input->getOption('keep-local');
@@ -163,7 +166,7 @@ class MySQLDumperCommand extends Command
     public function update()
     {
         $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
-        if ($manager->update($this->version, true)) {
+        if ($manager->update($this->getApplication()->getVersion(), true)) {
             $this->out('Updated to latest version!', 'success');
         } else {
             $this->out('mysqldumper up-to-date', 'warning');
