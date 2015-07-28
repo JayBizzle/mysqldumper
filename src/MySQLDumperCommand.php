@@ -19,8 +19,6 @@ class MySQLDumperCommand extends Command
 {
     const MANIFEST_FILE = 'http://jaybizzle.github.io/mysqldumper/manifest.json';
 
-    protected $version = '1.0.1';
-
     /**
      * The cli instance.
      * 
