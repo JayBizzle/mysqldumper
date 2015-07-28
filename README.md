@@ -1,5 +1,7 @@
 # MySQL Dumper
+
 [![StyleCI](https://styleci.io/repos/39658695/shield)](https://styleci.io/repos/39658695)
+
 Create MySQL dumps and upload to Dropbox/FTP
 
 ## Options
