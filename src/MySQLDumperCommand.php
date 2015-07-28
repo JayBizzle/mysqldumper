@@ -140,9 +140,6 @@ class MySQLDumperCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        echo $this->getApplication()->getVersion();
-
-        die();
         // setup options
         $this->dump_folder = $input->getOption('dir');
         $this->keep_local = $input->getOption('keep-local');
