@@ -20,6 +20,7 @@ keepfor | How long to keep the remote backups (any string that can be parsed by 
 driver | dropbox or ftp
 
 **Dropbox specific settings**
+
 Setting  | Description
 ------------- | -------------
 accesstoken  | The full path to to `mysqldump`
@@ -28,6 +29,7 @@ appsecret  | Database hostname
 Visit https://www.dropbox.com/developers/apps and get your "App Secret" and "Access Token".
 
 **FTP specific settings**
+
 Setting  | Description
 ------------- | -------------
 ftphost | FTP hostname
