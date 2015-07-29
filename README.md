@@ -4,6 +4,7 @@
 
 Create MySQL dumps and upload to Dropbox or remote FTP server.
 
+
 ## Options
 ```sh
   --dir=DIR                    The directory to output the mysql dumps [default: "archive"]
@@ -11,6 +12,7 @@ Create MySQL dumps and upload to Dropbox or remote FTP server.
   --skip-remote                Skip uploading files to remote
   --ignore-table=IGNORE-TABLE  Skip tables during dump (multiple values allowed)
 ```
+
 
 ## Settings
 Setting  | Description
@@ -22,14 +24,16 @@ pass | Database password
 keepfor | How long to keep the remote backups (any string that can be parsed by `strtotime` can be used)
 driver | dropbox or ftp
 
+
 **Dropbox specific settings**
 
 Setting  | Description
 ------------- | -------------
-accesstoken  | The full path to to `mysqldump`
-appsecret  | Database hostname
+accesstoken  | Dropbox access token
+appsecret  | Dropbox app secret
 
 Visit https://www.dropbox.com/developers/apps and get your "App Secret" and "Access Token".
+
 
 **FTP specific settings**
 
@@ -43,6 +47,7 @@ root | FTP root path (*Optional. Default `./`*)
 passive | Use passive mode (*Optional. Default `true`*)
 ssl | Use SSL (*Optional. Default `true`*)
 timeout | Connection timeout (*Optional. Default `30`*)
+
 
 ## Usage
 
