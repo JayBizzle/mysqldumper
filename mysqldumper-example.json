@@ -1,13 +1,14 @@
 {
   "mysqldump": "/path/to/mysqldump",
-  "host": "HOSTNAME",
-  "db":   "DATABASE",
-  "user": "USER",
-  "pass": "PASSWORD",
+  "dbhost": "HOSTNAME",
+  "dbname":   "DATABASE",
+  "dbuser": "USER",
+  "dbpass": "PASSWORD",
   "keepfor": "7 days",
-  "driver": "dropbox",
-  "dropbox": {
-  	"accesstoken": "ACCESSTOKEN",
-  	"appsecret": "APPSECRET"
-  }
+  "driver": "dropbox|ftp",
+  "accesstoken": "ACCESSTOKEN",
+  "appsecret": "APPSECRET",
+  "ftphost": "ftp.domain.com",
+  "ftpuser": "FTPUSER",
+  "ftppass": "FTPPASS"
 }

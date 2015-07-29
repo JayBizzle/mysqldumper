@@ -199,7 +199,7 @@ class MySQLDumperCommand extends Command
 
         // Loop of tables and create dump
         for ($i = 0; $i < $table_count; $i++) {
-            $table_name = $table_list[$i]['Tables_in_'.$this->config->db];
+            $table_name = $table_list[$i]['Tables_in_'.$this->config->dbname];
 
             $progress->advance(1, $this->parseString('(%s of %s) Dumping %s', [($i + 1), $table_count, $table_name], 'light_green'));
 
@@ -343,9 +343,9 @@ class MySQLDumperCommand extends Command
     public function buildCommand($table_name)
     {
         $command_parts[] = $this->config->mysqldump;
-        $command_parts[] = '--user='.$this->config->user;
-        $command_parts[] = '--password='.$this->config->pass;
-        $command_parts[] = '--host='.$this->config->host.' '.$this->config->db.' '.$table_name;
+        $command_parts[] = '--user='.$this->config->dbuser;
+        $command_parts[] = '--password='.$this->config->dbpass;
+        $command_parts[] = '--host='.$this->config->dbhost.' '.$this->config->dbname.' '.$table_name;
         $command_parts[] = '| gzip > "'.$this->dumpPath().$table_name.'.sql.gz"';
 
         return implode(' ', $command_parts);
@@ -395,7 +395,7 @@ class MySQLDumperCommand extends Command
     public function databaseSetup()
     {
         try {
-            $conn = new \PDO('mysql:host='.$this->config->host.';dbname='.$this->config->db, $this->config->user, $this->config->pass);
+            $conn = new \PDO('mysql:host='.$this->config->dbhost.';dbname='.$this->config->dbname, $this->config->dbuser, $this->config->dbpass);
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return $conn;
@@ -431,7 +431,7 @@ class MySQLDumperCommand extends Command
 
         if (!empty($this->ignore_table)) {
             $query_parts[] = $query;
-            $query_parts[] = 'where Tables_in_'.$this->config->db;
+            $query_parts[] = 'where Tables_in_'.$this->config->dbname;
             $query_parts[] = 'not in ("'.implode('","', $this->ignore_table).'")';
 
             return implode(' ', $query_parts);
@@ -477,7 +477,7 @@ class MySQLDumperCommand extends Command
      */
     public function createDropboxDriver()
     {
-        $client = new Client($this->config->dropbox->accesstoken, $this->config->dropbox->appsecret);
+        $client = new Client($this->config->accesstoken, $this->config->appsecret);
         $adapter = new DropboxAdapter($client);
 
         return new Filesystem($adapter);
@@ -491,16 +491,16 @@ class MySQLDumperCommand extends Command
     public function createFtpDriver()
     {
         $adapter = new FTP([
-            'host'     => $this->config->ftp->host,
-            'username' => $this->config->ftp->username,
-            'password' => $this->config->ftp->password,
+            'host'     => $this->config->ftphost,
+            'username' => $this->config->ftpuser,
+            'password' => $this->config->ftppass,
 
             // optional config settings
-            'port'    => $this->config->ftp->port ?: 21,
-            'root'    => $this->config->ftp->root ?: './',
-            'passive' => $this->config->ftp->passive ?: true,
-            'ssl'     => $this->config->ftp->ssl ?: true,
-            'timeout' => $this->config->ftp->timeout ?: 30,
+            'port'    => $this->config->ftpport ?: 21,
+            'root'    => $this->config->ftproot ?: './',
+            'passive' => $this->config->ftppassive ?: true,
+            'ssl'     => $this->config->ftpssl ?: true,
+            'timeout' => $this->config->ftptimeout ?: 30,
         ]);
 
         return new Filesystem($adapter);
