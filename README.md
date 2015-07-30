@@ -18,9 +18,9 @@ Create MySQL dumps and upload to Dropbox or remote FTP server.
 Setting  | Description
 ------------- | -------------
 mysqldump  | The full path to to `mysqldump`
-host  | Database hostname
-user | Database username
-pass | Database password
+dbhost  | Database hostname
+dbuser | Database username
+dbpass | Database password
 keepfor | How long to keep the remote backups (any string that can be parsed by `strtotime` can be used)
 driver | dropbox or ftp
 
