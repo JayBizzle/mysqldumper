@@ -42,11 +42,11 @@ Setting  | Description
 ftphost | FTP hostname
 ftpuser | FTP username
 ftppass | FTP password
-port | FTP Port (*Optional. Default `21`*)
-root | FTP root path (*Optional. Default `./`*)
-passive | Use passive mode (*Optional. Default `true`*)
-ssl | Use SSL (*Optional. Default `true`*)
-timeout | Connection timeout (*Optional. Default `30`*)
+ftpport | FTP Port (*Optional. Default `21`*)
+ftproot | FTP root path (*Optional. Default `./`*)
+ftppassive | Use passive mode (*Optional. Default `true`*)
+ftpssl | Use SSL (*Optional. Default `true`*)
+ftptimeout | Connection timeout (*Optional. Default `30`*)
 
 
 ## Usage
