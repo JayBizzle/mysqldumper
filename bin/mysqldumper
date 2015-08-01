@@ -7,7 +7,7 @@ use Gradcracker\Console\MySQLDumperApplication;
 use Gradcracker\Console\Command\mysqldumper;
 
 // Get new instance from our container
-$application = new MySQLDumperApplication('mysqldumper', '1.0.0');
+$application = new MySQLDumperApplication('mysqldumper', '1.0.1');
 
 // Run the command
 $application->run();
