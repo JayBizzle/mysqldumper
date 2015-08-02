@@ -4,6 +4,13 @@
 
 Create MySQL dumps and upload to Dropbox or remote FTP server.
 
+## Installation
+Get the latest version of `mysqldumper.phar`. Use cURL to grapb it directly on your server, or download the latest binary from [Releases](https://github.com/JayBizzle/mysqldumper/releases).
+```sh
+curl -OL https://github.com/JayBizzle/mysqldumper/releases/download/1.0.2/mysqldumper.phar
+```
+Then create a `mysqldumper.json` in the same directory as the phar and enter your own settings.
+
 
 ## Options
 ```sh
@@ -11,6 +18,7 @@ Create MySQL dumps and upload to Dropbox or remote FTP server.
   --keep-local                 Keep local dumps when backup is complete
   --skip-remote                Skip uploading files to remote
   --ignore-table=IGNORE-TABLE  Skip tables during dump (multiple values allowed)
+  --self-update                Check for, and update to latest version
 ```
 
 
