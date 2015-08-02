@@ -344,7 +344,7 @@ class MySQLDumperCommand extends Command
     {
         $command_parts[] = $this->config->mysqldump;
         $command_parts[] = '--user='.$this->config->db_user;
-        $command_parts[] = '--password='.$this->config->db_pass;
+        $command_parts[] = '--password=\''.$this->config->db_pass.'\'';
         $command_parts[] = '--host='.$this->config->db_host.' '.$this->config->db_name.' '.$table_name;
         $command_parts[] = '| gzip > "'.$this->dumpPath().$table_name.'.sql.gz"';
 
