@@ -509,7 +509,6 @@ class MySQLDumperCommand extends Command
     }
 }
 
-
 class DropBoxCerts extends DropboxAdapter
 {
     /**
