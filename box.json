@@ -4,7 +4,8 @@
         "src"
     ],
     "files": [
-        "vendor/herrera-io/phar-update/res/schema.json"
+        "vendor/herrera-io/phar-update/res/schema.json",
+        "vendor/dropbox/dropbox-sdk/lib/Dropbox/certs/trusted-certs.crt"
     ],
     "main": "bin/mysqldumper",
     "output": "mysqldumper.phar",

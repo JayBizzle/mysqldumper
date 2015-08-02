@@ -478,7 +478,9 @@ class MySQLDumperCommand extends Command
     public function createDropboxDriver()
     {
         $client = new Client($this->config->accesstoken, $this->config->appsecret);
-        $adapter = new DropboxAdapter($client);
+        $adapter = new DropBoxCerts($client);
+
+        $adapter->useExternalPaths();
 
         return new Filesystem($adapter);
     }
@@ -504,5 +506,21 @@ class MySQLDumperCommand extends Command
         ]);
 
         return new Filesystem($adapter);
+    }
+}
+
+
+class DropBoxCerts extends DropboxAdapter
+{
+    /**
+     * Normally, the Dropbox SDK tells cURL to look in the "certs" folder for root certificate
+     * information. But this won't work if the SDK is running from within a PHAR because
+     * cURL won't read files that are packaged in a PHAR.
+     * 
+     * @return void
+     */
+    public function useExternalPaths()
+    {
+        \Dropbox\RootCertificates::useExternalPaths();
     }
 }
