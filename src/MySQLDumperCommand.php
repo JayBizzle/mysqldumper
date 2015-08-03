@@ -363,12 +363,12 @@ class MySQLDumperCommand extends Command
         $files = $this->localAdapter->listContents($local_path);
 
         foreach ($files as $file) {
-            $contents = $this->localAdapter->read($local_path.$file['basename']);
+            $contents = $this->localAdapter->readStream($local_path.$file['basename']);
 
             $file_size = $this->localAdapter->getSize($local_path.$file['basename']);
 
             $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $file_size], 'light_green'));
-            $this->remoteAdapter->write($local_path.$file['basename'], $contents);
+            $this->remoteAdapter->writeStream($local_path.$file['basename'], $contents);
         }
     }
 
