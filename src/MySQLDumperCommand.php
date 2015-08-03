@@ -441,7 +441,7 @@ class MySQLDumperCommand extends Command
     }
 
     /**
-     * Check if the mysqldumo dump command path exists.
+     * Check if the mysqldump command path exists.
      * 
      * @return bool
      */
