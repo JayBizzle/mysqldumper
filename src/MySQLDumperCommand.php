@@ -509,9 +509,10 @@ class MySQLDumperCommand extends Command
     }
 
     /**
-     * Format bytes to a human readable size
+     * Format bytes to a human readable size.
      * 
-     * @param  int $bytes
+     * @param int $bytes
+     *
      * @return string
      */
     public function formatBytes($bytes)
