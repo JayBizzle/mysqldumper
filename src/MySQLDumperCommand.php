@@ -367,7 +367,7 @@ class MySQLDumperCommand extends Command
 
             $file_size = $this->localAdapter->getSize($local_path.$file['basename']);
 
-            $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $file_size], 'light_green'));
+            $this->out($this->parseString('Uploading %s (%s)', [$file['basename'], $this->formatBytes($file_size)], 'light_green'));
             $this->remoteAdapter->writeStream($local_path.$file['basename'], $contents);
         }
     }
@@ -506,6 +506,17 @@ class MySQLDumperCommand extends Command
         ]);
 
         return new Filesystem($adapter);
+    }
+
+    /**
+     * Format bytes to a human readable size
+     * 
+     * @param  int $bytes
+     * @return string
+     */
+    public function formatBytes($bytes)
+    {
+        return \ByteUnits\Binary::bytes($bytes)->format();
     }
 }
 

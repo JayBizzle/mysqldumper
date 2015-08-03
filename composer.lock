@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd4fc1b12e968b26d67612515ed0a9b7",
+    "hash": "a1b542bc0e4f0fa0a20d0cb356dd0012",
     "packages": [
         {
             "name": "dropbox/dropbox-sdk",
@@ -44,6 +44,57 @@
                 "dropbox"
             ],
             "time": "2015-06-29 21:47:57"
+        },
+        {
+            "name": "gabrielelana/byte-units",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gabrielelana/byte-units.git",
+                "reference": "ee1d99ae4374a76847e8366a8ea5464226ebcc01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gabrielelana/byte-units/zipball/ee1d99ae4374a76847e8366a8ea5464226ebcc01",
+                "reference": "ee1d99ae4374a76847e8366a8ea5464226ebcc01",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ByteUnits\\": "src/ByteUnits"
+                },
+                "files": [
+                    "src/ByteUnits/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriele Lana",
+                    "email": "gabriele.lana@gmail.com"
+                }
+            ],
+            "description": "Library to parse, format and convert byte units",
+            "homepage": "https://github.com/gabrielelana/byte-units",
+            "keywords": [
+                "byte",
+                "convert",
+                "format",
+                "parse",
+                "size",
+                "units"
+            ],
+            "time": "2015-03-11 15:46:37"
         },
         {
             "name": "herrera-io/json",
