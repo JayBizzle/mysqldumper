@@ -126,7 +126,7 @@ class MySQLDumperCommand extends Command
                 'self-update',
                 null,
                 InputOption::VALUE_NONE,
-                'Update mysqldumper'
+                'Check for, and update to latest version'
             );
     }
 
