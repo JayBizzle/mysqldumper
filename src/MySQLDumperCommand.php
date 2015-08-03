@@ -85,7 +85,7 @@ class MySQLDumperCommand extends Command
     /**
      * Create a new mysqldumper instance.
      * 
-     * @param CLImate $cli
+     * @param League\CLImate\CLImate $cli
      */
     public function __construct(CLImate $cli)
     {
