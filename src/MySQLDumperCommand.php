@@ -497,7 +497,7 @@ class MySQLDumperCommand extends Command
      */
     public function createFtpDriver()
     {
-        $adapter = new FTP([
+        $adapter = new Ftp([
             'host'     => $this->config->ftp_host,
             'username' => $this->config->ftp_user,
             'password' => $this->config->ftp_pass,
