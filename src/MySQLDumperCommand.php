@@ -185,8 +185,7 @@ class MySQLDumperCommand extends Command
     public function mysqldumper()
     {
         if (!$this->mysqldumpExists()) {
-            $this->out('mysqldump not found. Please check your path.', 'error');
-            die;
+            throw new \Exception('mysqldump command not found. Please check your path.');
         }
 
         // Set the name of the dated archive folder
@@ -387,8 +386,7 @@ class MySQLDumperCommand extends Command
     public function loadConfig()
     {
         if (!file_exists('mysqldumper.json')) {
-            $this->out('No mysqldumper.json found', 'error');
-            die;
+            throw new \Exception('No mysqldumper.json found');
         } else {
             return json_decode(file_get_contents('mysqldumper.json'));
         }
