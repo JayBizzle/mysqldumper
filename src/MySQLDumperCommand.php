@@ -62,6 +62,13 @@ class MySQLDumperCommand extends Command
     protected $archive_folder;
 
     /**
+     * The output folder for all dumps.
+     * 
+     * @var string
+     */
+    protected $dump_folder;
+
+    /**
      * Keep local copies of dumps.
      * 
      * @var bool
