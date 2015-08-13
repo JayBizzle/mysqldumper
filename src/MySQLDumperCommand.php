@@ -188,11 +188,7 @@ class MySQLDumperCommand extends Command
             throw new \Exception('mysqldump command not found. Please check your path.');
         }
 
-        // Set the name of the dated archive folder
-        $this->archive_folder = date('YmdHi');
-
-        // Create the output folder
-        $this->localAdapter->createDir($this->relativeDumpPath());
+        $this->createArchiveFolder();
 
         // Get a list of the tables we are going to dump
         $table_list = $this->listTables();
@@ -240,6 +236,16 @@ class MySQLDumperCommand extends Command
 
             $this->localAdapter->deleteDir($local_path);
         }
+    }
+
+    public function createArchiveFolder()
+    {
+        // Set the name of the dated archive folder
+        $this->archive_folder = date('YmdHi');
+
+        // Create the output folder
+        if(!$this->localAdapter->createDir($this->relativeDumpPath()))
+            throw \Exception("Couldn't create folder");
     }
 
     /**
