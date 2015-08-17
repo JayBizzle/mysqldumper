@@ -244,8 +244,9 @@ class MySQLDumperCommand extends Command
         $this->archive_folder = date('YmdHi');
 
         // Create the output folder
-        if(!$this->localAdapter->createDir($this->relativeDumpPath()))
+        if (!$this->localAdapter->createDir($this->relativeDumpPath())) {
             throw \Exception("Couldn't create folder");
+        }
     }
 
     /**
