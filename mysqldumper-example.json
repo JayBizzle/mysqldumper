@@ -1,14 +1,24 @@
 {
   "mysqldump": "/path/to/mysqldump",
+  
   "dbhost": "HOSTNAME",
   "dbname":   "DATABASE",
   "dbuser": "USER",
   "dbpass": "PASSWORD",
+  
   "keepfor": "7 days",
-  "driver": "dropbox|ftp",
+
+  "driver": "dropbox|ftp|s3",
+  
   "accesstoken": "ACCESSTOKEN",
   "appsecret": "APPSECRET",
+  
   "ftphost": "ftp.domain.com",
   "ftpuser": "FTPUSER",
-  "ftppass": "FTPPASS"
+  "ftppass": "FTPPASS",
+
+  "s3_bucket": "BUCKETNAME",
+  "s3_key": "KEY",
+  "s3_secret": "SECRET",
+  "s3_region": "REGION"
 }
