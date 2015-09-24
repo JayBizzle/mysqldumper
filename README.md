@@ -57,6 +57,18 @@ ftp_ssl | Use SSL (*Optional. Default `true`*)
 ftp_timeout | Connection timeout (*Optional. Default `30`*)
 
 
+**Amazon S3 specific settings**
+
+Setting  | Description
+------------- | -------------
+s3_bucket | Bucket name
+s3_key | You key
+s3_secret | Your secret
+s3_region | S3 region
+
+[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain you S3 key and secret.
+
+
 ## Usage
 
 #### Dropbox
@@ -93,3 +105,23 @@ Visit https://www.dropbox.com/developers/apps and get your "App Secret" and "Acc
   "ftp_pass": "PASSWORD"
 }
 ```
+
+#### Amazon S3
+`mysqldumper.json`
+```json
+{
+  "mysqldump": "/path/to/mysqldump",
+  "db_host": "HOSTNAME",
+  "db_name": "DATABASE",
+  "db_user": "USER",
+  "db_pass": "PASSWORD",
+  "keepfor": "7 days",
+  "driver": "s3",
+  "s3_bucket": "BUCKETNAME",
+  "s3_key": "KEY",
+  "s3_secret": "SECRET",
+  "s3_region": "REGION"
+}
+```
+
+[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain you S3 key and secret.

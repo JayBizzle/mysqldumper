@@ -2,12 +2,14 @@
 
 namespace Gradcracker\Console\Command;
 
+use Aws\S3\S3Client;
 use Dropbox\Client;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
 use League\CLImate\CLImate;
 use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Dropbox\DropboxAdapter;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
@@ -504,6 +506,27 @@ class MySQLDumperCommand extends Command
             'ssl'     => $this->config->ftp_ssl ?: true,
             'timeout' => $this->config->ftp_timeout ?: 30,
         ]);
+
+        return new Filesystem($adapter);
+    }
+
+    /**
+     * Create Amazon S3 connection.
+     * 
+     * @return League\Flysystem\Filesystem
+     */
+    public function createS3Driver()
+    {
+        $client = new S3Client([
+            'credentials' => [
+                'key'    => $this->config->s3_key,
+                'secret' => $this->config->s3_secret
+            ],
+            'region' => $this->config->s3_region,
+            'version' => 'latest',
+        ]);
+
+        $adapter = new AwsS3Adapter($client, $this->config->s3_bucket);
 
         return new Filesystem($adapter);
     }
