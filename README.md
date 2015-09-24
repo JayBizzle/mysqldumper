@@ -30,7 +30,7 @@ db_host  | Database hostname
 db_user | Database username
 db_pass | Database password
 keepfor | How long to keep the remote backups (any string that can be parsed by `strtotime` can be used)
-driver | dropbox or ftp
+driver | dropbox, ftp or s3
 
 
 **Dropbox specific settings**
@@ -62,7 +62,7 @@ ftp_timeout | Connection timeout (*Optional. Default `30`*)
 Setting  | Description
 ------------- | -------------
 s3_bucket | Bucket name
-s3_key | You key
+s3_key | Your key
 s3_secret | Your secret
 s3_region | S3 region
 
