@@ -2,7 +2,7 @@
 
 [![StyleCI](https://styleci.io/repos/39658695/shield)](https://styleci.io/repos/39658695)
 
-Create MySQL dumps and upload to Dropbox or remote FTP server.
+Create MySQL dumps and upload to Dropbox, remote FTP server or Amazon S3.
 
 ## Installation
 Get the latest version of `mysqldumper.phar`. Use cURL to grab it directly on your server, or download the latest binary from [Releases](https://github.com/JayBizzle/mysqldumper/releases).
