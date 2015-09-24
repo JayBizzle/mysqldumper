@@ -679,16 +679,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.13",
+            "version": "1.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "76caed01a57527599b55919f0746104f288b3d56"
+                "reference": "202c7775d959f377e2e302d93e7127c47604438a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/76caed01a57527599b55919f0746104f288b3d56",
-                "reference": "76caed01a57527599b55919f0746104f288b3d56",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/202c7775d959f377e2e302d93e7127c47604438a",
+                "reference": "202c7775d959f377e2e302d93e7127c47604438a",
                 "shasum": ""
             },
             "require": {
@@ -759,20 +759,20 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-09-20 13:05:34"
+            "time": "2015-09-22 19:18:28"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "e8e27d07bba47d29ca064b5f9dd06273fbaf7f62"
+                "reference": "b201d0020eaa90e64a302abaca34695d1e08864f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/e8e27d07bba47d29ca064b5f9dd06273fbaf7f62",
-                "reference": "e8e27d07bba47d29ca064b5f9dd06273fbaf7f62",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/b201d0020eaa90e64a302abaca34695d1e08864f",
+                "reference": "b201d0020eaa90e64a302abaca34695d1e08864f",
                 "shasum": ""
             },
             "require": {
@@ -806,7 +806,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2015-07-07 20:11:47"
+            "time": "2015-09-22 18:57:17"
         },
         {
             "name": "league/flysystem-dropbox",
