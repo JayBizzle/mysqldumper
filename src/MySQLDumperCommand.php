@@ -520,9 +520,9 @@ class MySQLDumperCommand extends Command
         $client = new S3Client([
             'credentials' => [
                 'key'    => $this->config->s3_key,
-                'secret' => $this->config->s3_secret
+                'secret' => $this->config->s3_secret,
             ],
-            'region' => $this->config->s3_region,
+            'region'  => $this->config->s3_region,
             'version' => 'latest',
         ]);
 
