@@ -66,7 +66,7 @@ s3_key | Your key
 s3_secret | Your secret
 s3_region | S3 region
 
-[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain you S3 key and secret.
+[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain your S3 key and secret.
 
 
 ## Usage
@@ -124,4 +124,4 @@ Visit https://www.dropbox.com/developers/apps and get your "App Secret" and "Acc
 }
 ```
 
-[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain you S3 key and secret.
+[See here](http://www.cloudberrylab.com/blog/how-to-find-your-aws-access-key-id-and-secret-access-key-and-register-with-cloudberry-s3-explorer/) to find out how to obtain your S3 key and secret.
