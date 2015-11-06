@@ -73,7 +73,9 @@ s3_region | S3 region
 
 As an example, you could run `mysqldumper` every `x` hours using a cron job with a command like this:
 
-`/usr/local/bin/php mysqldumper.phar --ignore-table=my_first_table --ignore-table=my_second_table >/dev/null 2>&1`
+```
+/usr/local/bin/php mysqldumper.phar --ignore-table=my_first_table --ignore-table=my_second_table >/dev/null 2>&1
+```
 
 #### Dropbox
 `mysqldumper.json`
