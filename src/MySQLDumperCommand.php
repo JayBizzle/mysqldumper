@@ -23,77 +23,77 @@ class MySQLDumperCommand extends Command
 
     /**
      * The cli instance.
-     * 
+     *
      * @var League\CLImate\CLImate
      */
     protected $cli;
 
     /**
      * The loaded config.
-     * 
+     *
      * @var object
      */
     protected $config;
 
     /**
      * Local filesystem adapter.
-     * 
+     *
      * @var League\Flysystem\Filesystem
      */
     protected $localAdapter;
 
     /**
      * Remote filesystem adapter.
-     * 
+     *
      * @var League\Flysystem\Filesystem
      */
     protected $remoteAdapter;
 
     /**
      * The database connection.
-     * 
+     *
      * @var \PDO
      */
     protected $db;
 
     /**
      * The dated archive output folder.
-     * 
+     *
      * @var string
      */
     protected $archive_folder;
 
     /**
      * The output folder for all dumps.
-     * 
+     *
      * @var string
      */
     protected $dump_folder;
 
     /**
      * Keep local copies of dumps.
-     * 
+     *
      * @var bool
      */
     protected $keep_local = false;
 
     /**
      * Skip the remote upload.
-     * 
+     *
      * @var bool
      */
     protected $skip_remote = false;
 
     /**
      * Array of tables to ignore.
-     * 
+     *
      * @var array
      */
     protected $ignore_table = [];
 
     /**
      * Create a new mysqldumper instance.
-     * 
+     *
      * @param League\CLImate\CLImate $cli
      */
     public function __construct(CLImate $cli)
@@ -104,7 +104,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Configure the command.
-     * 
+     *
      * @return void
      */
     protected function configure()
@@ -141,7 +141,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Excute the command.
-     * 
+     *
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
@@ -181,7 +181,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * The body of the command.
-     * 
+     *
      * @return void
      */
     public function mysqldumper()
@@ -228,7 +228,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Clean up local files.
-     * 
+     *
      * @return void
      */
     public function cleanupLocal()
@@ -253,7 +253,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Clean up remote files.
-     * 
+     *
      * @return void
      */
     public function cleanupRemote()
@@ -275,7 +275,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Return a path relative to the .phar root.
-     * 
+     *
      * @return string
      */
     public function relativeDumpPath()
@@ -285,7 +285,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Return the path to the dump folder.
-     * 
+     *
      * @param bool $relative
      *
      * @return string
@@ -302,7 +302,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Parse strings with passed variables.
-     * 
+     *
      * @param string $string
      * @param array  $params
      * @param string $color
@@ -324,7 +324,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Output messages to the terminal.
-     * 
+     *
      * @param string $message
      * @param string $style
      *
@@ -350,7 +350,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Build the mysqldump command.
-     * 
+     *
      * @param string $table_name
      *
      * @return string
@@ -368,7 +368,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Deploy files to the remote filesystem.
-     * 
+     *
      * @return void
      */
     public function deployToRemote()
@@ -389,7 +389,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Load config.
-     * 
+     *
      * @return void
      */
     public function loadConfig()
@@ -403,7 +403,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Setup a PDO connection to the database.
-     * 
+     *
      * @return void
      */
     public function databaseSetup()
@@ -420,7 +420,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Get all tables in the database.
-     * 
+     *
      * @return array
      */
     public function listTables()
@@ -436,7 +436,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Build the list tables query.
-     * 
+     *
      * @return string
      */
     public function buildQuery()
@@ -456,7 +456,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Check if the mysqldump command path exists.
-     * 
+     *
      * @return bool
      */
     public function mysqldumpExists()
@@ -486,7 +486,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Create Dropbox connection.
-     * 
+     *
      * @return League\Flysystem\Filesystem
      */
     public function createDropboxDriver()
@@ -501,7 +501,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Create FTP connection.
-     * 
+     *
      * @return League\Flysystem\Filesystem
      */
     public function createFtpDriver()
@@ -524,7 +524,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Create Amazon S3 connection.
-     * 
+     *
      * @return League\Flysystem\Filesystem
      */
     public function createS3Driver()
@@ -545,7 +545,7 @@ class MySQLDumperCommand extends Command
 
     /**
      * Format bytes to a human readable size.
-     * 
+     *
      * @param int $bytes
      *
      * @return string
@@ -562,7 +562,7 @@ class DropBoxCerts extends DropboxAdapter
      * Normally, the Dropbox SDK tells cURL to look in the "certs" folder for root certificate
      * information. But this won't work if the SDK is running from within a PHAR because
      * cURL won't read files that are packaged in a PHAR.
-     * 
+     *
      * @return void
      */
     public function useExternalPaths()
