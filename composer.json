@@ -9,11 +9,5 @@
         "herrera-io/phar-update": "1.*",
         "gabrielelana/byte-units": "0.2.*",
         "league/flysystem-aws-s3-v3": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Gradcracker\\Console\\": "src/",
-            "Gradcracker\\Console\\Command\\": "src/"
-        }
     }
 }
